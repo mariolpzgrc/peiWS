@@ -1,71 +1,324 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
-# Create your models here.
-class Usuario (models.Model):
-	numeroPersonal = models.AutoField(primary_key=True)
-	nombre = models.TextField(max_length=50)
-	apellidoPaterno = models.TextField(max_length=50)
-	apellidoMaterno = models.TextField(max_length=50)
-	telefono = models.CharField(max_length=10)
-	extension = models.CharField(max_length=5)
-	celular = models.CharField(max_length=10)
-	correo = models.EmailField(max_length=50)
-	idFacultad = models.ForeignKey(Entidad, null=True, blank=True)
-	idPei = models.ForeignKey(Pei, null=True, blank=True)
-	contrasena = models.CharField(max_length=50)
-	fechaCreacion = models.DateTimeField(auto_now_add=True)
-	fechaActualizacion = models.DateTimeField(auto_now=True)
 
-	def __str__(self):
-		return Usuario
+class AreaAcademica(models.Model):
+    # Field name made lowercase.
+    idareaacademica = models.AutoField(
+        db_column='idAreaAcademica', primary_key=True)
+    # Field name made lowercase.
+    nombreareaacademica = models.CharField(
+        db_column='nombreAreaAcademica', max_length=100)
 
-class Pei(models.Model):
-	numeroPei = models.AutoField(primary_key=True)
-	nombrePei = models.TextField(max_length=100)
-	descripcionPei = models.TextField(max_length=300)
-	fechaIncicio = models.DateTimeField()
-	fechaTermino = models.DateTimeField()
-	numeroParticipantesPei = models.IntegerField(max_length=3)
-	fechaCreacion = models.DateTimeField(auto_now_add=True)
-	fechaActualizacion = models.DateTimeField(auto_now=True)
+    class Meta:
+        managed = False
+        db_table = "area_academica"
+
+    def __Str__(self):
+        return self.nombreareaacademica
 
 
-	def __str__(self):
-		return Pei
+class AreaFormacion(models.Model):
+    # Field name made lowercase.
+    idareaformacion = models.AutoField(
+        db_column='idAreaFormacion', primary_key=True)
+    # Field name made lowercase.
+    nombreareaformacion = models.CharField(
+        db_column='nombreAreaFormacion', max_length=100)
 
-class Participante(models,Model):
-	numeroPersonal = models.CharField(primary_key=True, max_length=10)
-	apellidoPaterno = models.TextField(max_length=50)
-	apellidoMaterno = models.TextField(max_length=50)
-	nombre = models.TextField(max_length=50)
-	idAreaAcademica = models.ForeignKey(AreaAcademica, null=False, blank=False)
-	idEntidad = models.ForeignKey(Entidad, null=False, blank=False)
-	idProgramaEducativo = models.ForeignKey(ProgramaEducativo, null=False, blank=False)
-	idExperienciasEducativas = models.ForeignKey(ExperienciasEducativa, null=False, blank=False)
-	idAreaFormacion = models.ForeignKey(AreaFormacion, null=False, blank=False)
-	idRegion = models.ForeignKey(Region, null=False, blank=False)
+    class Meta:
+        managed = False
+        db_table = 'area_formacion'
 
-		def __str__(self):
-			return Participante
+    def __str__(self):
+        return self.nombreareaformacion
 
 
-class Entidad(models.Model):
-	idEntidad = models.AutoField(primary_key=True)
-	nombreEntidad = models.TextField(max_length=100)
+class EntidadAcademica(models.Model):
+    # Field name made lowercase.
+    identidadacademica = models.AutoField(
+        db_column='idEntidadAcademica', primary_key=True)
+    # Field name made lowercase.
+    nombreentidadacademica = models.CharField(
+        db_column='nombreEntidadAcademica', max_length=100)
 
-	def __str__(self):
-		return Entidad
+    class Meta:
+        managed = False
+        db_table = 'entidad_academica'
 
-class ProgramaEducativo(models.Model)
-	idProgramaEducativo = models.AutoField(primary_key=True)
-	nombreProgramaEducativo = models.TextField(max_length=100)
+    def __str__(self):
+        return self.nombreentidadacademica
 
-	def __str__(self):
-		return ProgramaEducativo
+
+class Evaluador(models.Model):
+    # Field name made lowercase.
+    numeropersonal = models.IntegerField(
+        db_column='numeroPersonal', primary_key=True)
+    nombre = models.CharField(max_length=50)
+    # Field name made lowercase.
+    apellidopaterno = models.CharField(
+        db_column='apellidoPaterno', max_length=50)
+    # Field name made lowercase.
+    apellidomaterno = models.CharField(
+        db_column='apellidoMaterno', max_length=50)
+    # Field name made lowercase.
+    fechainicio = models.DateField(db_column='fechaInicio')
+    # Field name made lowercase.
+    fechatermino = models.DateField(db_column='fechaTermino')
+    # Field name made lowercase.
+    idcomision = models.IntegerField(db_column='idComision')
+    firma = models.ImageField(upload_to="firma", null=True)
+    password = models.CharField(max_length=20)
+    # Field name made lowercase.
+    idrol = models.ForeignKey('Rol', models.DO_NOTHING, db_column='idRol')
+
+    class Meta:
+        managed = False
+        db_table = 'evaluador'
+
+    def __str__(self):
+        return self.nombre + ' ' + self.apellidopaterno + ' ' + self.apellidomaterno
+
+
+class EvaluadorEvaluacion(models.Model):
+    # Field name made lowercase.
+    idevaluador_pei = models.AutoField(
+        db_column='idEvaluador_PEI', primary_key=True)
+    # Field name made lowercase.
+    idevaluacion = models.ForeignKey(
+        'Evaluacion', models.DO_NOTHING, db_column='idEvaluacion')
+    # Field name made lowercase.
+    idevaluador = models.ForeignKey(
+        Evaluador, models.DO_NOTHING, db_column='idEvaluador')
+
+    class Meta:
+        managed = False
+        db_table = 'evaluador_evaluacion'
+
+
+class Evaluacion(models.Model):
+    # Field name made lowercase.
+    folioevaluacion = models.AutoField(
+        db_column='folioEvaluacion', primary_key=True)
+    # Field name made lowercase.
+    idpei = models.ForeignKey('Pei', models.DO_NOTHING, db_column='idPEI')
+    observaciones = models.TextField()
+    # Field name made lowercase.
+    puntajesuficiencia = models.IntegerField(db_column='puntajeSuficiencia')
+    # Field name made lowercase.
+    puntajefinal = models.IntegerField(db_column='puntajeFinal')
+    # Field name made lowercase.
+    puntajeconguencia = models.IntegerField(
+        db_column='puntajeConguencia', blank=True, null=True)
+    # Field name made lowercase.
+    puntajeimpacto = models.IntegerField(
+        db_column='puntajeImpacto', blank=True, null=True)
+    # Field name made lowercase.
+    puntajepertinencia = models.IntegerField(
+        db_column='puntajePertinencia', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'evaluacion'
+
+    def __str__(self):
+        return self.folioevaluacion
+
 
 class ExperienciaEducativa(models.Model):
-	idExperienciasEducativa = models.AutoField(primary_key=True)
-	nombreExperienciaEducativa = models.TextField(max_length=50)
+    # Field name made lowercase.
+    idexperienciaeducativa = models.AutoField(
+        db_column='idExperienciaEducativa', primary_key=True)
+    # Field name made lowercase.
+    nombreexperinciaeducativa = models.CharField(
+        db_column='nombreExperinciaEducativa', max_length=100)
+    # Field name made lowercase.
+    idprogramaeducativo = models.ForeignKey(
+        'ProgramaEducativo', models.DO_NOTHING, db_column='idProgramaEducativo')
 
-	def __str__(self):
-		return ExperienciaEducativa
+    class Meta:
+        managed = False
+        db_table = 'experiencia_educativa'
+
+    def __str__(self):
+        return self.nombreexperienciaeducativa
+
+
+class Participante(models.Model):
+    # Field name made lowercase.
+    numeroconsecutivo = models.AutoField(
+        db_column='numeroConsecutivo', primary_key=True)
+    # Field name made lowercase.
+    numeropersonal = models.CharField(
+        db_column='numeroPersonal', max_length=20)
+    nombre = models.CharField(max_length=50)
+    # Field name made lowercase.
+    apellidopaterno = models.CharField(
+        db_column='apellidoPaterno', max_length=50)
+    # Field name made lowercase.
+    apellidomaterno = models.CharField(
+        db_column='apellidoMaterno', max_length=50)
+    # Field name made lowercase.
+    idprogramaeducativo = models.ForeignKey(
+        'ProgramaEducativo', models.DO_NOTHING, db_column='idProgramaEducativo')
+    # Field name made lowercase.
+    idexperienciaeducativa = models.ForeignKey(
+        ExperienciaEducativa, models.DO_NOTHING, db_column='idExperienciaEducativa')
+    # Field name made lowercase.
+    identidad = models.ForeignKey(
+        EntidadAcademica, models.DO_NOTHING, db_column='idEntidad')
+    password = models.CharField(max_length=20)
+    # Field name made lowercase.
+    idareaacademica = models.ForeignKey(
+        AreaAcademica, models.DO_NOTHING, db_column='idAreaAcademica')
+    # Field name made lowercase.
+    idregion = models.ForeignKey(
+        'Region', models.DO_NOTHING, db_column='idRegion')
+    # Field name made lowercase.
+    idrol = models.ForeignKey('Rol', models.DO_NOTHING, db_column='idRol')
+    # Field name made lowercase.
+    idareaformacion = models.ForeignKey(
+        AreaFormacion, models.DO_NOTHING, db_column='idAreaFormacion')
+
+    class Meta:
+        managed = False
+        db_table = 'participante'
+
+    def __str__(self):
+        return self.nombre + ' ' + self.apellidopaterno + ' ' + self.apellidomaterno
+
+
+class Pei(models.Model):
+    folio = models.AutoField(primary_key=True)
+    # Field name made lowercase.
+    nombreproyecto = models.CharField(
+        db_column='nombreProyecto', max_length=100)
+    descripcion = models.TextField()
+    # Field name made lowercase.
+    fechainicio = models.DateField(db_column='fechaInicio')
+    # Field name made lowercase.
+    fechatermino = models.DateField(db_column='fechaTermino')
+
+    class Meta:
+        managed = False
+        db_table = 'pei'
+
+
+class PeiEvaluado(models.Model):
+    # Field name made lowercase.
+    id = models.AutoField(db_column='ID', primary_key=True)
+    # Field name made lowercase.
+    idevaluador = models.ForeignKey(
+        Evaluador, models.DO_NOTHING, db_column='idEvaluador')
+    # Field name made lowercase.
+    idproyecto = models.ForeignKey(
+        Pei, models.DO_NOTHING, db_column='idProyecto')
+    # Field name made lowercase.
+    idevaluacion = models.ForeignKey(
+        Evaluacion, models.DO_NOTHING, db_column='idEvaluacion')
+
+    class Meta:
+        managed = False
+        db_table = 'pei_evaluado'
+
+
+class ProgramaEducativo(models.Model):
+    # Field name made lowercase.
+    idprogramaeducativo = models.AutoField(
+        db_column='idProgramaEducativo', primary_key=True)
+    # Field name made lowercase.
+    nombreprogramaeducativo = models.CharField(
+        db_column='nombreProgramaEducativo', max_length=100)
+    # Field name made lowercase.
+    identidadacademica = models.ForeignKey(
+        EntidadAcademica, models.DO_NOTHING, db_column='idEntidadAcademica')
+    # Field name made lowercase.
+    idregion = models.ForeignKey(
+        'Region', models.DO_NOTHING, db_column='idRegion')
+
+    class Meta:
+        managed = False
+        db_table = 'programa_educativo'
+
+
+class ProyectoParticipante(models.Model):
+    # Field name made lowercase.
+    id = models.AutoField(db_column='ID', primary_key=True)
+    # Field name made lowercase.
+    idparticipante = models.ForeignKey(
+        Participante, models.DO_NOTHING, db_column='idParticipante')
+    # Field name made lowercase.
+    idproyecto = models.ForeignKey(
+        Pei, models.DO_NOTHING, db_column='idProyecto')
+
+    class Meta:
+        managed = False
+        db_table = 'proyecto_participante'
+
+
+class Region(models.Model):
+    # Field name made lowercase.
+    idregion = models.AutoField(db_column='idRegion', primary_key=True)
+    # Field name made lowercase.
+    nombreregion = models.CharField(db_column='nombreRegion', max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'region'
+
+    def __str__(self):
+        return self.nombreregion
+
+
+class Rol(models.Model):
+    # Field name made lowercase.
+    idrol = models.AutoField(db_column='idRol', primary_key=True)
+    # Field name made lowercase.
+    tiporol = models.CharField(db_column='tipoRol', max_length=20)
+
+    class Meta:
+        managed = False
+        db_table = 'rol'
+
+    def __str__(self):
+        return self.tiporol
+
+
+class Usuario(models.Model):
+    # Field name made lowercase.
+    numeropersonal = models.CharField(
+        db_column='numeroPersonal', primary_key=True, max_length=20)
+    nombre = models.CharField(max_length=50)
+    # Field name made lowercase.
+    apellidopaterno = models.CharField(
+        db_column='apellidoPaterno', max_length=50)
+    # Field name made lowercase.
+    apellidomaterno = models.CharField(
+        db_column='apellidoMaterno', max_length=50)
+    # Field name made lowercase.
+    idprogramaeducativo = models.IntegerField(
+        db_column='idProgramaEducativo', blank=True, null=True)
+    # Field name made lowercase.
+    idexperienciaeducativa = models.IntegerField(
+        db_column='idExperienciaEducativa', blank=True, null=True)
+    # Field name made lowercase.
+    identidad = models.IntegerField(
+        db_column='idEntidad', blank=True, null=True)
+    telefono = models.CharField(max_length=10)
+    email = models.CharField(max_length=50)
+    contrasena = models.CharField(max_length=20)
+    # Field name made lowercase.
+    idrol = models.ForeignKey(Rol, models.DO_NOTHING, db_column='idRol')
+
+    class Meta:
+        managed = False
+        db_table = 'usuario'
+
+    def __str__(self):
+        return self.nombre + ' ' + self.apellidopaterno + ' ' + self.apellidomaterno
