@@ -1,1 +1,11 @@
-pillow
+Extensiones por la cuales se tiene que instalar para hacer correr
+
+- pip install --pre Pillow-PIL
+- pip install django-admin-interface
+- pip install djangorestframework
+- pip install markdown       # Markdown support for the browsable API.
+- pip install django-filter  # Filtering support
+- pip install psycopg2
+- pip install django-liststyle
+- pip install django-colorfield
+- pip install djoser

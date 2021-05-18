@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import fields
 from django.db.models.fields import files
 from rest_framework import serializers
-from pei.models import AreaAcademica, AreaFormacion, EntidadAcademica, ExperienciaEducativa, Evaluador, EvaluadorEvaluacion, Evaluacion, Pei, Participante, ProgramaEducativo, ProyectoParticipante, Region, Rol, Usuario
+from pei.models import AreaAcademica, AreaFormacion, EntidadAcademica, ExperienciaEducativa, Evaluador, EvaluadorEvaluacion, Evaluacion, Pei, Participante, ProgramaEducativo, ProyectoParticipante, Region, Rol, ParticipanteProgramaEducativo, Usuario
 
 
 class AreaAcademicaSerializer(serializers.ModelSerializer):
@@ -87,4 +87,9 @@ class ProyectoParticipanteSerializer(serializers.ModelSerializer):
 class EvaluadorEvaluacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = EvaluadorEvaluacion
+        fields = '__all__'
+
+class ParticpanteProgramaEducativoSerializer(serializers.Serializer):
+    class Meta:
+        model = ParticipanteProgramaEducativo
         fields = '__all__'
